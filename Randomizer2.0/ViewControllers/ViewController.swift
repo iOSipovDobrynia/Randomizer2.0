@@ -15,8 +15,11 @@ class ViewController: UIViewController {
     
     @IBOutlet var resultButton: UIButton!
     
+    private let defaultValues = Values.getDefaultValues()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setDefaultValue()
         resultButton.layer.cornerRadius = 15
     }
     
@@ -34,10 +37,16 @@ class ViewController: UIViewController {
     
     //MARK: -IBActions
     @IBAction func getButtonPressed() {
-        let minimumValue = Int(minimumLabel.text ?? "") ?? 0
-        let maximumValue = Int(maximumLabel.text ?? "") ?? 100
+        let minimumValue = Int(minimumLabel.text ?? "") ?? defaultValues.minimumValue
+        let maximumValue = Int(maximumLabel.text ?? "") ?? defaultValues.maximumValue
         
         randomLabel.text = Int.random(in: minimumValue...maximumValue).formatted()
+    }
+    
+    //MARK: -Private func
+    private func setDefaultValue() {
+        minimumLabel.text = defaultValues.minimumValue.formatted()
+        maximumLabel.text = defaultValues.maximumValue.formatted()
     }
 }
 
