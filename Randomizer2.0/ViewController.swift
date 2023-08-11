@@ -21,7 +21,10 @@ class ViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let settingsVC = segue.destination as? SettingsViewController else {
+        guard let navigationVC = segue.destination as? UINavigationController else {
+            return
+        }
+        guard let settingsVC = navigationVC.topViewController as? SettingsViewController else {
             return
         }
         
@@ -35,15 +38,6 @@ class ViewController: UIViewController {
         let maximumValue = Int(maximumLabel.text ?? "") ?? 100
         
         randomLabel.text = Int.random(in: minimumValue...maximumValue).formatted()
-    }
-    
-    @IBAction func unwind(for unwindSegue: UIStoryboardSegue) {
-        guard let settingsVC = unwindSegue.source as? SettingsViewController else {
-            return
-        }
-        
-        minimumLabel.text = settingsVC.minimumValueTF.text
-        maximumLabel.text = settingsVC.maximumValueTF.text
     }
 }
 

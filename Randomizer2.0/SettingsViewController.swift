@@ -24,7 +24,11 @@ final class SettingsViewController: UIViewController {
     }
     
     //MARK: -IBActions
-    @IBAction func cancelButtonDidTapped(_ sender: Any) {
+    @IBAction func cancelButtonPressed() {
+        dismiss(animated: true)
+    }
+    
+    @IBAction func saveButtonPressed() {
         dismiss(animated: true)
     }
     
