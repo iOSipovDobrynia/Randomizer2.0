@@ -9,6 +9,10 @@ struct Values {
     let minimumValue: Int
     let maximumValue: Int
     
+    var randomNumber: Int {
+        Int.random(in: minimumValue...maximumValue)
+    }
+    
     static func getDefaultValues() -> Values {
         Values(minimumValue: 0, maximumValue: 100)
     }

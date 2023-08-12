@@ -7,7 +7,11 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+protocol SettingsViewControllerDelegate {
+    func setNewValues(for values: Values)
+}
+
+class RandomViewController: UIViewController {
     //MARK: -IBOutlets
     @IBOutlet var minimumLabel: UILabel!
     @IBOutlet var maximumLabel: UILabel!
@@ -15,11 +19,15 @@ class ViewController: UIViewController {
     
     @IBOutlet var resultButton: UIButton!
     
-    private let defaultValues = Values.getDefaultValues()
+    private var values = Values.getDefaultValues() {
+        didSet {
+            minimumLabel.text = values.minimumValue.formatted()
+            maximumLabel.text = values.maximumValue.formatted()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setDefaultValue()
         resultButton.layer.cornerRadius = 15
     }
     
@@ -31,22 +39,20 @@ class ViewController: UIViewController {
             return
         }
         
-        settingsVC.minimumValue = minimumLabel.text
-        settingsVC.maximumValue = maximumLabel.text
+        settingsVC.values = values
+        
+        settingsVC.delegate = self
     }
     
     //MARK: -IBActions
     @IBAction func getButtonPressed() {
-        let minimumValue = Int(minimumLabel.text ?? "") ?? defaultValues.minimumValue
-        let maximumValue = Int(maximumLabel.text ?? "") ?? defaultValues.maximumValue
-        
-        randomLabel.text = Int.random(in: minimumValue...maximumValue).formatted()
-    }
-    
-    //MARK: -Private func
-    private func setDefaultValue() {
-        minimumLabel.text = defaultValues.minimumValue.formatted()
-        maximumLabel.text = defaultValues.maximumValue.formatted()
+        randomLabel.text = values.randomNumber.formatted()
     }
 }
 
+//MARK: - SettingsViewControllerDelegate
+extension RandomViewController: SettingsViewControllerDelegate {
+    func setNewValues(for values: Values) {
+        self.values = values
+    }
+}
