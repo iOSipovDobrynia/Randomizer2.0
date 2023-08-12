@@ -21,6 +21,9 @@ final class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        minimumValueTF.delegate = self
+        maximumValueTF.delegate = self
+        
         minimumValueTF.text = values.minimumValue.formatted()
         maximumValueTF.text = values.maximumValue.formatted()
     }
@@ -31,12 +34,8 @@ final class SettingsViewController: UIViewController {
     }
     
     @IBAction func saveButtonPressed() {
-        delegate.setNewValues(
-            for: Values(
-                minimumValue: Int(minimumValueTF.text ?? "0") ?? 0,
-                maximumValue: Int(maximumValueTF.text ?? "100") ?? 100
-            )
-        )
+        view.endEditing(true)
+        delegate.setNewValues(for: values)
         dismiss(animated: true)
     }
     
@@ -45,6 +44,13 @@ final class SettingsViewController: UIViewController {
 //MARK: -UITextFieldDelegate
 extension SettingsViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
-        return 
+        guard let input = textField.text else { return }
+        guard let newValue = Int(input) else { return }
+        if textField == minimumValueTF {
+            values.minimumValue = newValue
+        } else if textField == maximumValueTF {
+            values.maximumValue = newValue
+        }
+        
     }
 }

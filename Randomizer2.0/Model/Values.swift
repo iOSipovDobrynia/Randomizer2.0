@@ -6,8 +6,8 @@
 //
 
 struct Values {
-    let minimumValue: Int
-    let maximumValue: Int
+    var minimumValue: Int
+    var maximumValue: Int
     
     var randomNumber: Int {
         Int.random(in: minimumValue...maximumValue)
